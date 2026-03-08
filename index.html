@@ -12,82 +12,95 @@
             color: #ff0000;
             font-family: 'Orbitron', sans-serif;
             margin: 0;
+            padding: 0;
             height: 100vh;
+            width: 100vw;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* The "Click to Enter" Overlay to bypass browser blocks */
         #overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,1);
             z-index: 100;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            text-align: center;
+            padding: 20px;
         }
 
         #overlay h2 {
             font-size: 1.5rem;
-            letter-spacing: 5px;
-            animation: pulse 1.5s infinite;
+            letter-spacing: 3px;
+            animation: pulse 1s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            0%, 100% { transform: scale(1); color: #ff0000; }
+            50% { transform: scale(1.05); color: #800000; }
         }
 
         .container {
             text-align: center;
             text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+            width: 95%;
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 40px;
-            letter-spacing: 4px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            line-height: 1.4;
         }
 
         #timer-container {
             display: flex;
-            font-size: 5rem;
-            border: 6px solid #ff0000;
-            padding: 40px 60px;
-            border-radius: 4px;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.2rem; /* Mobile default */
+            border: 4px solid #ff0000;
+            padding: 20px 5px;
             background: linear-gradient(180deg, #200000 0%, #000 100%);
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.4);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
         }
 
         .unit-box {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 120px;
+            min-width: 70px;
         }
 
         .label {
-            font-size: 1rem;
-            margin-top: 10px;
+            font-size: 0.6rem;
+            margin-top: 5px;
             color: #660000;
         }
 
         .separator {
-            margin: 0 10px;
+            margin: 0 5px;
             animation: blink 1s step-end infinite;
         }
 
-        @keyframes blink {
-            50% { opacity: 0; }
+        /* Desktop Adjustments */
+        @media (min-width: 768px) {
+            h1 { font-size: 2rem; letter-spacing: 4px; }
+            #timer-container { font-size: 5rem; padding: 40px 60px; }
+            .unit-box { min-width: 120px; }
+            .label { font-size: 1rem; }
+            #overlay h2 { font-size: 2rem; }
         }
+
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -122,8 +135,8 @@
         </div>
     </div>
 
-    <audio id="slap-audio" loop>
-        <source src="https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=You+Just+Got+Slapped&filename=mt/MTI3Mzg1MjgxMjczODc2_m_2be_2fL7jR_2bE.mp3" type="audio/mpeg">
+    <audio id="slap-audio" loop preload="auto">
+        <source src="https://raw.githubusercontent.com/the-maldonado-group/Salty-Bot/master/sounds/youjustgotslapped.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -131,9 +144,8 @@
         const audio = document.getElementById("slap-audio");
 
         function startEverything() {
-            // Hide overlay and play audio
             document.getElementById("overlay").style.display = "none";
-            audio.play();
+            audio.play().catch(e => console.log("Audio block:", e));
         }
 
         function updateTimer() {
@@ -141,7 +153,7 @@
             const diff = slapDate - now;
 
             if (diff <= 0) {
-                document.body.innerHTML = "<h1 style='font-size: 10rem; color: white;'>SLAP!</h1>";
+                document.body.innerHTML = "<h1 style='font-size: 5rem; color: white; text-align: center; text-shadow: 0 0 20px #fff;'>SLAP!</h1>";
                 return;
             }
 
